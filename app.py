@@ -74,7 +74,7 @@ st.markdown("""
         box-shadow: 0 4px 15px rgba(72,219,251,0.3);
     }
     .metric-card {
-        background: white;
+        background: #e08080;
         padding: 20px;
         border-radius: 10px;
         box-shadow: 0 2px 10px rgba(0,0,0,0.1);
@@ -104,6 +104,37 @@ st.markdown("""
 
 st.title("🏥 Advanced Diabetes Prediction System")
 st.markdown("### 🔬 AI-Powered Medical Risk Assessment with Individual Patient Analysis")
+
+# ---------------- New: About page + footer helpers ----------------
+def about_page():
+    st.title("About")
+    st.markdown("""
+**KISHORE KUMAR S S**
+
+This application demonstrates an end-to-end ML workflow for diabetes risk prediction:
+- Data upload, cleaning & imputation  
+- EDA & interactive visualizations  
+- Model training (Logistic Regression, Random Forest, XGBoost)  
+- Per-patient explainability and clinical-style recommendations
+
+**Credits**  
+Author: **KISHORE KUMAR S S**  
+© 2025 KISHORE KUMAR SS
+""")
+
+def add_footer():
+    st.markdown("""
+    <style>
+      .app-footer{
+        position: fixed; left:0; right:0; bottom:0;
+        background: rgba(0,0,0,.85); color:#fff;
+        padding:8px 12px; text-align:center; font-size:.9rem; z-index:9999;
+      }
+      .block-container{ padding-bottom:70px; }
+    </style>
+    <div class="app-footer">© 2025 KISHORE KUMAR SS</div>
+    """, unsafe_allow_html=True)
+# ------------------------------------------------------------------
 
 def create_sample_data():
     """Create a sample diabetes dataset"""
@@ -338,15 +369,18 @@ def get_medical_explanation(feature, value, avg_value, contribution):
     else:
         return explanations[feature]['normal']
 
+# ---------------- Sidebar with About added ----------------
 sidebar_selection = st.sidebar.selectbox(
-    "📋 Navigation",
-    ["🏠 Home", "📚 Tutorial - How to Use", "📊 Data Upload & Analysis", "🤖 Train Models", "🔮 Make Predictions", "👤 Individual Analysis"]
+    " Navigation",
+    ["🏠 Home", "📚 Tutorial - How to Use", "📊 Data Upload & Analysis",
+     "🤖 Train Models", "🔮 Make Predictions", "👤 Individual Analysis", "ℹ️ About"]
 )
+# ----------------------------------------------------------
 
 if sidebar_selection == "🏠 Home":
     st.markdown("""
     <div style='background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 30px; border-radius: 15px; color: white; margin-bottom: 20px;'>
-        <h2>🎯 Welcome to Advanced Diabetes Prediction System</h2>
+        <h2> Welcome to Advanced Diabetes Prediction System</h2>
         <p style='font-size: 18px;'>Medical-grade AI system for diabetes risk assessment with individual patient explanations</p>
     </div>
     """, unsafe_allow_html=True)
@@ -385,19 +419,19 @@ if sidebar_selection == "🏠 Home":
     
     with features_col1:
         st.markdown("""
-        ✅ **Works for Both Males and Females**
+         **Works for Both Males and Females**
         - Pregnancy column is optional
         - Gender-inclusive analysis
         
-        ✅ **Handles Missing Data Automatically**
+         **Handles Missing Data Automatically**
         - Multiple imputation methods (Mean, Median, KNN)
         - Visual comparison of methods
         
-        ✅ **Works With or Without Outcome Column**
+         **Works With or Without Outcome Column**
         - Training mode: Use data with outcomes
         - Prediction mode: Predict on new patients without labels
         
-        ✅ **Beautiful Visualizations**
+         **Beautiful Visualizations**
         - Animated charts and graphs
         - Color-coded risk levels (Red/Yellow/Blue)
         - Interactive plots
@@ -405,22 +439,22 @@ if sidebar_selection == "🏠 Home":
     
     with features_col2:
         st.markdown("""
-        ✅ **Individual Patient Explanations**
+         **Individual Patient Explanations**
         - See exactly why each person may have diabetes
         - Feature contribution analysis
         - Medical interpretations
         
-        ✅ **Model Saving & Loading**
+         **Model Saving & Loading**
         - Save trained models for future use
         - No need to retrain every time
         - Track model performance
         
-        ✅ **Professional Medical Reports**
+         **Professional Medical Reports**
         - Downloadable predictions
         - Detailed risk assessments
         - Ready for clinical review
         
-        ✅ **Interactive Tutorial**
+         **Interactive Tutorial**
         - Step-by-step guide
         - Learn as you go
         - Example datasets included
@@ -557,12 +591,12 @@ elif sidebar_selection == "📚 Tutorial - How to Use":
         
         ### What You'll See:
         
-        - 📊 **Accuracy:** How often the model is correct
-        - 🎯 **Precision:** Of predicted diabetes cases, how many are true
-        - 🔍 **Recall:** Of actual diabetes cases, how many were found
-        - 📈 **ROC Curve:** Overall model performance visualization
-        - 🗺️ **Confusion Matrix:** Detailed breakdown of predictions
-        - ⭐ **Feature Importance:** Which factors matter most
+        -  **Accuracy:** How often the model is correct
+        -  **Precision:** Of predicted diabetes cases, how many are true
+        -  **Recall:** Of actual diabetes cases, how many were found
+        -  **ROC Curve:** Overall model performance visualization
+        -  **Confusion Matrix:** Detailed breakdown of predictions
+        -  **Feature Importance:** Which factors matter most
         
         ### 💾 Save Your Model:
         
@@ -588,9 +622,9 @@ elif sidebar_selection == "📚 Tutorial - How to Use":
         ### What You Get:
         
         For each patient, you'll see:
-        - 🎯 **Prediction:** Diabetes or No Diabetes
-        - 📊 **Risk Score:** Probability (0-100%)
-        - 🎨 **Color Coding:**
+        -  **Prediction:** Diabetes or No Diabetes
+        -  **Risk Score:** Probability (0-100%)
+        -  **Color Coding:**
           - 🔴 Red = High Risk (>70%)
           - 🟡 Yellow = Medium Risk (30-70%)
           - 🟢 Blue/Green = Low Risk (<30%)
@@ -664,7 +698,7 @@ elif sidebar_selection == "📊 Data Upload & Analysis":
                 df_original = pd.read_csv(uploaded_file)
                 st.success(f"✅ File uploaded successfully! Shape: {df_original.shape}")
                 st.session_state['df_original'] = df_original
-                st.balloons()
+                
             except Exception as e:
                 st.error(f"❌ Error reading file: {e}")
                 st.stop()
@@ -756,7 +790,7 @@ elif sidebar_selection == "📊 Data Upload & Analysis":
                 st.session_state['df_imputed'] = df_imputed
                 st.session_state['imputation_method'] = imputation_method
                 st.markdown("<div class='success-box'>✅ Missing values imputed successfully!</div>", unsafe_allow_html=True)
-                st.balloons()
+                
         
         if 'df_imputed' in st.session_state:
             df_imputed = st.session_state['df_imputed']
@@ -935,7 +969,7 @@ elif sidebar_selection == "🤖 Train Models":
             st.session_state['y_test'] = y_test
             
             st.markdown("<div class='success-box'>🎉 All models trained successfully!</div>", unsafe_allow_html=True)
-            st.balloons()
+            
     
     if 'training_results' in st.session_state:
         results = st.session_state['training_results']
@@ -1126,7 +1160,7 @@ elif sidebar_selection == "🤖 Train Models":
                 
                 filename = save_model(model_to_save, model, scaler, feature_names, metrics)
                 st.success(f"✅ Model saved as: {filename}")
-                st.balloons()
+                
 
 elif sidebar_selection == "🔮 Make Predictions":
     st.header("🔮 Make Predictions on New Data")
@@ -1222,7 +1256,7 @@ elif sidebar_selection == "🔮 Make Predictions":
                 st.session_state['X_pred_scaled'] = X_pred_scaled
                 
                 st.markdown("<div class='success-box'>🎉 Predictions generated successfully!</div>", unsafe_allow_html=True)
-                st.balloons()
+                
         
         if 'prediction_results' in st.session_state:
             df_results = st.session_state['prediction_results']
@@ -1435,6 +1469,10 @@ elif sidebar_selection == "👤 Individual Analysis":
         - Maintain healthy weight
         """)
 
+elif sidebar_selection == "ℹ️ About":
+    about_page()
+
+# ------- Existing informational block (optional to keep) -------
 st.markdown("---")
 st.markdown("""
 <div style='text-align: center; color: #666; padding: 20px;'>
@@ -1443,3 +1481,6 @@ st.markdown("""
     <p style='font-size: 12px;'>⚕️ For medical professional use. Always consult with healthcare providers for diagnosis and treatment.</p>
 </div>
 """, unsafe_allow_html=True)
+
+# ------- New: persistent footer on every page -------
+add_footer()
